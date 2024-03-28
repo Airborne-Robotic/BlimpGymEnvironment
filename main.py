@@ -10,11 +10,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from blimp import BlimpEnv
+from blimp import Blimp
 
 
 #env = gym.make("BlimpEnv", render_mode="human")
-env = BlimpEnv()
+env = Blimp("sano.xml", render_mode="human")
 
 # set up matplotlib
 is_ipython = 'inline' in matplotlib.get_backend()
@@ -79,7 +79,7 @@ TAU = 0.005
 LR = 1e-4
 
 # Get number of actions from gym action space
-n_actions = env.action_space.n
+n_actions = 6
 # Get the number of state observations
 state, info = env.reset()
 n_observations = len(state)
@@ -106,9 +106,10 @@ def select_action(state):
             # t.max(1) will return the largest column value of each row.
             # second column on max result is index of where max element was
             # found, so we pick action with the larger expected reward.
-            return policy_net(state).max(1).indices.view(1, 1)
+            #return policy_net(state)
+            return (policy_net(state),policy_net(state).max(1).indices.view(1, 1),)
     else:
-        return torch.tensor([[env.action_space.sample()]], device=device, dtype=torch.long)
+        return (torch.tensor([[0,0,0,0,0,0]], device=device, dtype=torch.long),torch.tensor([[0]]),)
 
 
 episode_durations = []
@@ -162,6 +163,8 @@ def optimize_model():
     # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
     # columns of actions taken. These are the actions which would've been taken
     # for each batch state according to policy_net
+    #print(action_batch)
+    # print(state_batch)
     state_action_values = policy_net(state_batch).gather(1, action_batch)
 
     # Compute V(s_{t+1}) for all next states.
@@ -200,8 +203,9 @@ for i_episode in range(num_episodes):
     state = torch.tensor(state, dtype=torch.float32,
                          device=device).unsqueeze(0)
     for t in count():
-        action = select_action(state)
-        observation, reward, terminated, truncated, _ = env.step(action.item())
+        action, mem_action = select_action(state)
+        print(action.tolist())
+        observation, reward, terminated, truncated = env.step(action.tolist()[0])
         reward = torch.tensor([reward], device=device)
         done = terminated or truncated
 
@@ -212,7 +216,7 @@ for i_episode in range(num_episodes):
                 observation, dtype=torch.float32, device=device).unsqueeze(0)
 
         # Store the transition in memory
-        memory.push(state, action, next_state, reward)
+        memory.push(state, mem_action, next_state, reward)
 
         # Move to the next state
         state = next_state
@@ -228,7 +232,7 @@ for i_episode in range(num_episodes):
             target_net_state_dict[key] = policy_net_state_dict[key] * \
                 TAU + target_net_state_dict[key]*(1-TAU)
         target_net.load_state_dict(target_net_state_dict)
-        env.render()
+        #env.render()
 
         if done:
             episode_durations.append(t + 1)

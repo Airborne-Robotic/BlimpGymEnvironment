@@ -1,11 +1,9 @@
 import numpy as np
-
-from gymnasium import utils
-from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
-from gymnasium.spaces import Box
+import mujoco
+import cv2
 
 
-class BlimpEnv(MujocoEnv, utils.EzPickle):
+class Blimp():
     metadata = {
         "render_modes": [
             "human",
@@ -15,31 +13,85 @@ class BlimpEnv(MujocoEnv, utils.EzPickle):
         "render_fps": 20,
     }
 
-    def __init__(self, **kwargs):
-        observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(111,), dtype=np.float64
-        )
-        MujocoEnv.__init__(
-            self, "blimp.xml", 5, observation_space=observation_space, **kwargs
-        )
-        utils.EzPickle.__init__(self, **kwargs)
 
+
+    # TODO add action space
+    def __init__(self, modelPath, render_mode: str = ""):
+        # Probably make it a bit more modular.
+        self.m = mujoco.MjModel.from_xml_path(modelPath)
+        self.d = mujoco.MjData(self.m)
+        if render_mode == "human":
+            self.renderer = mujoco.Renderer(self.m)
+        self.render_mode : str = render_mode
+
+    # TODO might need to add more sensor based on our real world sensor
+    def get_obs(self):
+        return np.concatenate(
+            [
+                self.d.sensor('body_gyro').data.copy(),
+                self.d.sensor('body_linacc').data.copy(),
+                self.d.sensor('body_quat').data.copy()
+            ]
+        )
+
+
+    # Update data is a private function
+    def _update_data(self,action):
+        self.d.actuator('prop_joint').ctrl = [ action[0]]
+        self.d.actuator('prop_joint2').ctrl = [ action[1]]
+        self.d.actuator('prop_joint3').ctrl = [ action[2]]
+        self.d.actuator('prop_joint4').ctrl = [ action[3]]
+        self.d.actuator('prop_joint5').ctrl = [ action[4]]
+        self.d.actuator('prop_joint6').ctrl = [ action[5]]
+
+
+    """
+    Observation space is basically what the neural network observes.
+    For our reward function we use more than just the observation space.
+    """
     def step(self, a):
-        pos_before = self.get_body_com("")
-        self.do_simulate(a, self.frame_skip)
-        pos_after = self.get_body_com("")
+        # Observation space
 
-        forward_reward = (xposafter - xposbefore) / self.dt
-        # TODO update the state_vector 
-        state = self.state_vector()
-        not_terminated = (
-            np.isfinite(state).all() and state[2] >= 0.2 and state[2] <= 1.0
-        )
-        terminated = not not_terminated
-        ob = self._get_obs()
+        observation = self.get_obs()
+        
+        # TODO use the action
+        self._update_data(a)
+        
+        t1 = self.d.time
+        pos_before = self.d.geom('mylar').xpos
+        step = 1 # compute the reward function after 10 steps
+        for i in range(step):
+            mujoco.mj_step(self.m, self.d) 
+        pos_after = self.d.geom('mylar').xpos
+        t2 = self.d.time
+
+
+        # print(forward_reward)
+        #reward = pos_after[0] + pos_after[1] + pos_after[2]
+        reward = 0
+        for i in pos_after:
+            if i > 1:
+                reward = reward - 1
+            else:
+                reward = reward + 1
+        print(reward)
+
+        state = observation
+        print(pos_after)
+
+        # TODO Come up a condition for termination
+        terminated = True if (pos_after[0] > 1 or pos_after[0] <-1 or pos_after[1]>1 or pos_after[1]<-1 or pos_after[2]>50 ) else False# Keeping it true for now
+       # terminated = not not_terminated
+        print(terminated )
+        ob = state
 
         if self.render_mode == "human":
-            self.render()
+            self.renderer.update_scene(self.d)
+            pixels = self.renderer.render()
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
+
+
         # truncation=False as the time limit is handled by the `TimeLimit` wrapper added during `make`
         return (
             ob,
@@ -48,22 +100,13 @@ class BlimpEnv(MujocoEnv, utils.EzPickle):
             False,
         )
 
-    def _get_obs(self):
-        return np.concatenate(
-            [
-                self.sim.data.qpos.flat[2:],
-                self.sim.data.qvel.flat,
-                np.clip(self.sim.data.cfrc_ext, -1, 1).flat,
-            ]
-        )
-    def reset_model(self):
-        qpos = self.init_qpos + self.np_random.uniform(
-            size=self.model.nq, low=-0.1, high=0.1
-        )
-        qvel = self.init_qvel + self.np_random.standard_normal(self.model.nv) * 0.1
-        self.set_state(qpos, qvel)
-        return self._get_obs()
 
+
+    def reset(self):
+        mujoco.mj_resetData(self.m, self.d)
+        # TODO Add more info for rest
+        return (self.get_obs(),[])
+        
     def viewer_setup(self):
         assert self.viewer is not None
         self.viewer.cam.distance = self.model.stat.extent * 0.5
