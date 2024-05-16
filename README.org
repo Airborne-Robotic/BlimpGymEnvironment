@@ -1,3 +1,6 @@
+#+title: Blimp Environment
+
+
 * Blimp Environment
 
 The purpose of this blimp environment is to help train a RL network. It uses Mujoco for it's physic simulation.
@@ -33,5 +36,8 @@ Example Use case:
 
 #+END_SRC
 
+
+
+* Diving into how each functions work
 
 

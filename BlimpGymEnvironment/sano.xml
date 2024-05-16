@@ -1,12 +1,12 @@
 <mujoco>
   <compiler assetdir="assets" />
   <!-- <statistic center="0 0 0.1" extent="0.6" meansize=".05"/> -->
-  <!-- <option gravity="0 0 -9.8" viscosity="0.01" wind="1 0 0" /> -->
-  <!-- <option gravity="0 0 -9.8"  /> -->
-  <option density="1.204" viscosity="1.8e-5" integrator="implicit" wind="1 0 0"/>
+  <option gravity="0 0 -9.8" viscosity="0.01" wind="0.5 0 0" />
+  <option gravity="0 0 -9.8"  />
+  <!-- <option density="1.204" viscosity="1.8e-2" integrator="implicit"/> -->
 
   <default>
-    <motor ctrlrange="-10 10" />
+    <motor ctrlrange="-1 1" />
     <default class="imported">
       <mesh scale="0.001 0.001 0.001" />
     </default>
@@ -37,7 +37,6 @@
         <site rgba="1 .4 0 1" />
       </default>
     </default>
-    <!-- <site group="5"/> -->
   </default>
 
   <visual>
@@ -73,14 +72,14 @@
 
     <body childclass="pink" gravcomp="7.2" pos="0 0 1">
       <freejoint />
-      <geom name="mylar" type="ellipsoid" size="0.35 0.35 0.20" rgba="0.6 0 0 1" />
-      <site name="mountBalloon4" pos = "-0.020 -0.034 -0.2" ></site>
-      <site name="mountBalloon2" pos = "0.020 0.035 -0.2"></site>
-      <site name="mountBalloon3" pos = "-.020 0.034 -0.2"></site>
-      <site name="mountBalloon1" pos = "0.020 -0.035 -0.2"></site>
+      <geom name="mylar" type="ellipsoid" size="0.45 0.45 0.21" rgba="0.6 0 0 1" />
+      <site name="mountBalloon4" pos = "-0.020 -0.034 -0.21" ></site>
+      <site name="mountBalloon2" pos = "0.020 0.035 -0.21"></site>
+      <site name="mountBalloon3" pos = "-.020 0.034 -0.21"></site>
+      <site name="mountBalloon1" pos = "0.020 -0.035 -0.21"></site>
     </body>
 
-    <body name="gondola" pos="0 0 1" quat="0 1 0 0" gravcomp="1.1">
+    <body name="gondola" pos="0 0 .79" quat="0 1 0 0">
       <freejoint/>
       <geom type="mesh" mesh="Gondola" pos="0 0 0" quat="0 1 0 0" />
       <body name="m1" pos="0.020 0.035 0" quat="0 1 0.45 0">
@@ -151,7 +150,7 @@
           <body name="propeller6" pos="0 0 0.02">
             <joint type="hinge" name="prop_joint6" damping="0.03" axis="0 0 1" />
             <geom type="ellipsoid" size="0.0025 0.015 0.001" rgba="0 0 1 1" />
-            <site name="thrust6" pos="0 0 0.02" />
+            <site name="thrust6" pos="0 0 0" />
           </body>
         </body> 
       </body>
@@ -166,8 +165,8 @@
     <motor name="prop_joint2" site="thrust2" />
     <motor name="prop_joint3" site="thrust3" />
     <motor name="prop_joint4" site="thrust4" />
-    <motor name="prop_joint5" site="thrust5" gear="0 0 1 0 0 -.0201"/>
-    <motor name="prop_joint6" site="thrust6" gear="0 0 1 0 0 -.0201"/>
+    <motor name="prop_joint5" site="thrust5" gear="0 0 1 0 0 .0201"/>
+    <motor name="prop_joint6" site="thrust6" gear="0 0 1 0 0 .0201"/>
     <!-- <motor name="prop_joint" site="thrust1" gear="0 0 0 0 0 0" /> -->
   </actuator>
 

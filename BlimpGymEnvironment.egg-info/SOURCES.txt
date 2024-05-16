@@ -1,0 +1,18 @@
+MANIFEST.in
+pyproject.toml
+BlimpGymEnvironment/__init__.py
+BlimpGymEnvironment/blimp.py
+BlimpGymEnvironment/sano.xml
+BlimpGymEnvironment.egg-info/PKG-INFO
+BlimpGymEnvironment.egg-info/SOURCES.txt
+BlimpGymEnvironment.egg-info/dependency_links.txt
+BlimpGymEnvironment.egg-info/requires.txt
+BlimpGymEnvironment.egg-info/top_level.txt
+BlimpGymEnvironment/assets/Gondola v9.obj
+BlimpGymEnvironment/assets/Gondola.mtl
+BlimpGymEnvironment/assets/Gondola.obj
+BlimpGymEnvironment/assets/Motor v1.obj
+BlimpGymEnvironment/assets/MotorMount.obj
+BlimpGymEnvironment/assets/MotorMountHolder v21.obj
+BlimpGymEnvironment/assets/MotorMountHolder.obj
+BlimpGymEnvironment/assets/VerticalMount v9.obj

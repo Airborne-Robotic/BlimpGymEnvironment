@@ -1,7 +1,8 @@
 import numpy as np
 import mujoco
 import cv2
-
+import os
+import pkg_resources
 
 class Blimp():
     metadata = {
@@ -16,9 +17,10 @@ class Blimp():
 
 
     # TODO add action space
-    def __init__(self, modelPath, render_mode: str = ""):
+    def __init__(self, modelPath: str = "sano.xml", render_mode: str = ""):
         # Probably make it a bit more modular.
-        self.m = mujoco.MjModel.from_xml_path(modelPath)
+        DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
+        self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
         self.d = mujoco.MjData(self.m)
         if render_mode == "human":
             self.renderer = mujoco.Renderer(self.m)
@@ -59,30 +61,31 @@ class Blimp():
         
         t1 = self.d.time
         pos_before = self.d.geom('mylar').xpos
-        step = 1 # compute the reward function after 10 steps
+        step = 10 # compute the reward function after 10 steps
         for i in range(step):
             mujoco.mj_step(self.m, self.d) 
         pos_after = self.d.geom('mylar').xpos
         t2 = self.d.time
 
 
+
         # print(forward_reward)
         #reward = pos_after[0] + pos_after[1] + pos_after[2]
-        reward = 0
-        for i in pos_after:
-            if i > 1:
-                reward = reward - 1
-            else:
-                reward = reward + 1
-        print(reward)
+        reward = -(abs(observation[0]) + abs(observation[1]) + abs(observation[2]))
+        # for i in pos_after:
+        #     if i > 0.3:
+        #         reward = reward - 1
+        #     else:
+        #         reward = reward + 1
+        # print(reward)
 
         state = observation
-        print(pos_after)
+        # print(pos_after)
 
         # TODO Come up a condition for termination
-        terminated = True if (pos_after[0] > 1 or pos_after[0] <-1 or pos_after[1]>1 or pos_after[1]<-1 or pos_after[2]>50 ) else False# Keeping it true for now
+        terminated = True if (pos_after[0] > 1 or pos_after[0] <-1 or pos_after[1]>1 or pos_after[1]<-1 or pos_after[2]>50 or reward < -2 ) else False# Keeping it true for now
        # terminated = not not_terminated
-        print(terminated )
+        # print(terminated )
         ob = state
 
         if self.render_mode == "human":
@@ -112,4 +115,12 @@ class Blimp():
         self.viewer.cam.distance = self.model.stat.extent * 0.5
 
 
-    
+
+
+if __name__ == '__main__':
+    env = Blimp("sano.xml", render_mode="human")
+
+    a = [0,0,0,0,0,0]
+    while True:
+        ob, reward, terminated,_ = env.step(a)
+        print(ob)

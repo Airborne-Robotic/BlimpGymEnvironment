@@ -1,0 +1,2 @@
+include BlimpGymEnvironment/assets/*
+include BlimpGymEnvironment/*.xml
