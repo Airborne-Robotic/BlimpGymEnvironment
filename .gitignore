@@ -1,0 +1,16 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+*.py[cod]
+*.egg
+build
+htmlcov
+BlimpGymEnvironment/.DS_Store
+BlimpGymEnvironment/DPT_hybrid.pt
+BlimpGymEnvironment/DPT_main/
+BlimpGymEnvironment/dpt/
+BlimpGymEnvironment/out.pfm
+BlimpGymEnvironment/util/
+BlimpGymEnvironment/weights/

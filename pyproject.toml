@@ -10,4 +10,5 @@ version = "0.0.1"
 dependencies = [
     "mujoco",
     "opencv-python",
+    "setuptools"
 ]

@@ -8,6 +8,14 @@ BlimpGymEnvironment.egg-info/SOURCES.txt
 BlimpGymEnvironment.egg-info/dependency_links.txt
 BlimpGymEnvironment.egg-info/requires.txt
 BlimpGymEnvironment.egg-info/top_level.txt
+BlimpGymEnvironment/DPT_main/run_monodepth.py
+BlimpGymEnvironment/DPT_main/run_segmentation.py
+BlimpGymEnvironment/DPT_main/setup.py
+BlimpGymEnvironment/DPT_main/util/__init__.py
+BlimpGymEnvironment/DPT_main/util/io.py
+BlimpGymEnvironment/DPT_main/util/misc.py
+BlimpGymEnvironment/DPT_main/util/pallete.py
+BlimpGymEnvironment/assets/Desk.obj
 BlimpGymEnvironment/assets/Gondola v9.obj
 BlimpGymEnvironment/assets/Gondola.mtl
 BlimpGymEnvironment/assets/Gondola.obj
@@ -16,3 +24,14 @@ BlimpGymEnvironment/assets/MotorMount.obj
 BlimpGymEnvironment/assets/MotorMountHolder v21.obj
 BlimpGymEnvironment/assets/MotorMountHolder.obj
 BlimpGymEnvironment/assets/VerticalMount v9.obj
+BlimpGymEnvironment/dpt/__init__.py
+BlimpGymEnvironment/dpt/base_model.py
+BlimpGymEnvironment/dpt/blocks.py
+BlimpGymEnvironment/dpt/midas_net.py
+BlimpGymEnvironment/dpt/models.py
+BlimpGymEnvironment/dpt/transforms.py
+BlimpGymEnvironment/dpt/vit.py
+BlimpGymEnvironment/util/__init__.py
+BlimpGymEnvironment/util/io.py
+BlimpGymEnvironment/util/misc.py
+BlimpGymEnvironment/util/pallete.py

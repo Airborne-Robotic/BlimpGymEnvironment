@@ -4,10 +4,21 @@ import cv2
 import os
 import pkg_resources
 
+import glob
+import torch
+import util.io
+
+from torchvision.transforms import Compose
+
+from dpt.models import DPTDepthModel
+from dpt.midas_net import MidasNet_large
+from dpt.transforms import Resize, NormalizeImage, PrepareForNet
+
 class Blimp():
     metadata = {
         "render_modes": [
             "human",
+            "blimp",
             "rgb_array",
             "depth_array",
         ],
@@ -19,22 +30,24 @@ class Blimp():
     # TODO add action space
     def __init__(self, modelPath: str = "sano.xml", render_mode: str = ""):
         # Probably make it a bit more modular.
-        DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
-        self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
+        # DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
+        # self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
+        self.m = mujoco.MjModel.from_xml_path(modelPath)
         self.d = mujoco.MjData(self.m)
-        if render_mode == "human":
-            self.renderer = mujoco.Renderer(self.m)
+        # if render_mode == "human":
+        self.renderer = mujoco.Renderer(self.m)
         self.render_mode : str = render_mode
 
     # TODO might need to add more sensor based on our real world sensor
     def get_obs(self):
-        return np.concatenate(
-            [
-                self.d.sensor('body_gyro').data.copy(),
-                self.d.sensor('body_linacc').data.copy(),
-                self.d.sensor('body_quat').data.copy()
+
+        self.renderer.update_scene(self.d, camera="blimpCamera")
+        pixels = self.renderer.render()
+        return [
+                self.d.geom("mylar").xpos,
+                pixels.shape,
+                pixels.flatten()
             ]
-        )
 
 
     # Update data is a private function
@@ -55,7 +68,7 @@ class Blimp():
         # Observation space
 
         observation = self.get_obs()
-        
+
         # TODO use the action
         self._update_data(a)
         
@@ -71,7 +84,7 @@ class Blimp():
 
         # print(forward_reward)
         #reward = pos_after[0] + pos_after[1] + pos_after[2]
-        reward = -(abs(observation[0]) + abs(observation[1]) + abs(observation[2]))
+        reward = -(abs(observation[0][0]) + abs(observation[0][1]) + abs(observation[0][2]))
         # for i in pos_after:
         #     if i > 0.3:
         #         reward = reward - 1
@@ -94,7 +107,11 @@ class Blimp():
             cv2.imshow("blimp",pixels)
             cv2.waitKey(10)
 
-
+        if self.render_mode == "blimp":
+            self.renderer.update_scene(self.d, camera="blimpCamera")
+            pixels = self.renderer.render()
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
         # truncation=False as the time limit is handled by the `TimeLimit` wrapper added during `make`
         return (
             ob,
@@ -118,9 +135,62 @@ class Blimp():
 
 
 if __name__ == '__main__':
-    env = Blimp("sano.xml", render_mode="human")
+    env = Blimp("sano.xml", render_mode="blimp")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("device: %s" % device)
+
+
+    model = DPTDepthModel(
+        path="DPT_hybrid.pt",
+        backbone="vitb_rn50_384",
+        non_negative=True,
+        enable_attention_hooks=False,
+    )
+    normalization = NormalizeImage(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+    net_w = net_h = 384
+    transform = Compose(
+        [
+            Resize(
+                net_w,
+                net_h,
+                resize_target=None,
+                keep_aspect_ratio=True,
+                ensure_multiple_of=32,
+                resize_method="minimal",
+                image_interpolation_method=cv2.INTER_CUBIC,
+            ),
+            normalization,
+            PrepareForNet(),
+        ]
+    )
+
+    model.eval()
+
 
     a = [0,0,0,0,0,0]
     while True:
         ob, reward, terminated,_ = env.step(a)
-        print(ob)
+        img = ob[2].reshape(ob[1])
+        img_input = transform({"image": img})["image"]
+
+        with torch.no_grad():
+            sample = torch.from_numpy(img_input).to(device).unsqueeze(0)
+            prediction = model.forward(sample)
+            prediction = (
+                torch.nn.functional.interpolate(
+                    prediction.unsqueeze(1),
+                    size=img.shape[:2],
+                    mode="bicubic",
+                    align_corners=False,
+                )
+                .squeeze()
+                .cpu()
+                .numpy()
+            )
+
+            util.io.disp_depth("out",prediction,bits=2)
+            # print(prediction)
+
+        # cv2.waitKey(10)
+        # print(ob[0])
+        # print(ob)

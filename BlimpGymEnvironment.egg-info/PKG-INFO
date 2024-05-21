@@ -3,3 +3,4 @@ Name: BlimpGymEnvironment
 Version: 0.0.1
 Requires-Dist: mujoco
 Requires-Dist: opencv-python
+Requires-Dist: setuptools
