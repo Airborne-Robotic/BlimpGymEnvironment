@@ -4,16 +4,6 @@ import cv2
 import os
 import pkg_resources
 
-import glob
-import torch
-import util.io
-
-from torchvision.transforms import Compose
-
-from dpt.models import DPTDepthModel
-from dpt.midas_net import MidasNet_large
-from dpt.transforms import Resize, NormalizeImage, PrepareForNet
-
 class Blimp():
     metadata = {
         "render_modes": [
@@ -134,63 +124,3 @@ class Blimp():
 
 
 
-if __name__ == '__main__':
-    env = Blimp("sano.xml", render_mode="blimp")
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("device: %s" % device)
-
-
-    model = DPTDepthModel(
-        path="DPT_hybrid.pt",
-        backbone="vitb_rn50_384",
-        non_negative=True,
-        enable_attention_hooks=False,
-    )
-    normalization = NormalizeImage(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
-    net_w = net_h = 384
-    transform = Compose(
-        [
-            Resize(
-                net_w,
-                net_h,
-                resize_target=None,
-                keep_aspect_ratio=True,
-                ensure_multiple_of=32,
-                resize_method="minimal",
-                image_interpolation_method=cv2.INTER_CUBIC,
-            ),
-            normalization,
-            PrepareForNet(),
-        ]
-    )
-
-    model.eval()
-
-
-    a = [0,0,0,0,0,0]
-    while True:
-        ob, reward, terminated,_ = env.step(a)
-        img = ob[2].reshape(ob[1])
-        img_input = transform({"image": img})["image"]
-
-        with torch.no_grad():
-            sample = torch.from_numpy(img_input).to(device).unsqueeze(0)
-            prediction = model.forward(sample)
-            prediction = (
-                torch.nn.functional.interpolate(
-                    prediction.unsqueeze(1),
-                    size=img.shape[:2],
-                    mode="bicubic",
-                    align_corners=False,
-                )
-                .squeeze()
-                .cpu()
-                .numpy()
-            )
-
-            util.io.disp_depth("out",prediction,bits=2)
-            # print(prediction)
-
-        # cv2.waitKey(10)
-        # print(ob[0])
-        # print(ob)
