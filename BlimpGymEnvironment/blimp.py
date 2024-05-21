@@ -22,7 +22,6 @@ class Blimp():
         # Probably make it a bit more modular.
         DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
-        self.m = mujoco.MjModel.from_xml_path(modelPath)
         self.d = mujoco.MjData(self.m)
         # if render_mode == "human":
         self.renderer = mujoco.Renderer(self.m)
