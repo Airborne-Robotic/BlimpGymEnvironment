@@ -41,12 +41,10 @@ class Blimp():
 
     # Update data is a private function
     def _update_data(self,action):
-        self.d.actuator('prop_joint').ctrl = [ action[0]]
-        self.d.actuator('prop_joint2').ctrl = [ action[1]]
-        self.d.actuator('prop_joint3').ctrl = [ action[2]]
-        self.d.actuator('prop_joint4').ctrl = [ action[3]]
-        self.d.actuator('prop_joint5').ctrl = [ action[4]]
-        self.d.actuator('prop_joint6').ctrl = [ action[5]]
+        self.d.actuator('motor1').ctrl = [action[0]]
+        self.d.actuator('motor2').ctrl = [action[1]]
+        self.d.actuator('servo1').ctrl = [action[2]]
+        self.d.actuator('servo2').ctrl = [action[3]]
 
 
     """
