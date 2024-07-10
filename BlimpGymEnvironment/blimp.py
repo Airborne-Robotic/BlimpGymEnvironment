@@ -18,7 +18,7 @@ class Blimp():
 
 
     # TODO add action space
-    def __init__(self, modelPath: str = "sano.xml", render_mode: str = ""):
+    def __init__(self, modelPath: str = "diff.xml", render_mode: str = ""):
         # Probably make it a bit more modular.
         DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
