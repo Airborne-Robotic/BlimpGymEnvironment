@@ -2,6 +2,7 @@ MANIFEST.in
 pyproject.toml
 BlimpGymEnvironment/__init__.py
 BlimpGymEnvironment/blimp.py
+BlimpGymEnvironment/diff.xml
 BlimpGymEnvironment/sano.xml
 BlimpGymEnvironment.egg-info/PKG-INFO
 BlimpGymEnvironment.egg-info/SOURCES.txt
@@ -11,6 +12,7 @@ BlimpGymEnvironment.egg-info/top_level.txt
 BlimpGymEnvironment/DPT_main/run_monodepth.py
 BlimpGymEnvironment/DPT_main/run_segmentation.py
 BlimpGymEnvironment/DPT_main/setup.py
+BlimpGymEnvironment/DPT_main/test.py
 BlimpGymEnvironment/DPT_main/util/__init__.py
 BlimpGymEnvironment/DPT_main/util/io.py
 BlimpGymEnvironment/DPT_main/util/misc.py
