@@ -17,14 +17,23 @@ BlimpGymEnvironment/DPT_main/util/__init__.py
 BlimpGymEnvironment/DPT_main/util/io.py
 BlimpGymEnvironment/DPT_main/util/misc.py
 BlimpGymEnvironment/DPT_main/util/pallete.py
+BlimpGymEnvironment/assets/Board Mount.mtl
+BlimpGymEnvironment/assets/Board Mount.obj
 BlimpGymEnvironment/assets/Desk.obj
 BlimpGymEnvironment/assets/Gondola v9.obj
 BlimpGymEnvironment/assets/Gondola.mtl
 BlimpGymEnvironment/assets/Gondola.obj
+BlimpGymEnvironment/assets/House.mtl
+BlimpGymEnvironment/assets/House.obj
 BlimpGymEnvironment/assets/Motor v1.obj
 BlimpGymEnvironment/assets/MotorMount.obj
 BlimpGymEnvironment/assets/MotorMountHolder v21.obj
 BlimpGymEnvironment/assets/MotorMountHolder.obj
+BlimpGymEnvironment/assets/PropGuard.mtl
+BlimpGymEnvironment/assets/PropGuard.obj
+BlimpGymEnvironment/assets/QuadProp.obj
+BlimpGymEnvironment/assets/ServoMount.mtl
+BlimpGymEnvironment/assets/ServoMount.obj
 BlimpGymEnvironment/assets/VerticalMount v9.obj
 BlimpGymEnvironment/dpt/__init__.py
 BlimpGymEnvironment/dpt/base_model.py
