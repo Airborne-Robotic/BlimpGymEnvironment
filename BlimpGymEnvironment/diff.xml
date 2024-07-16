@@ -6,7 +6,7 @@
   <!-- <option gravity="0 0 -9.8"  density="1.293" viscosity="1.8e-5" > -->
   <!-- <option  gravity="0 0 -9.8" viscosity="1.8e-5" integrator="implicit" > -->
   <option gravity="0 0 -9.8" viscosity="1.8e-5" integrator="RK4">
-    <!-- <flag contact="enable"/> -->
+    <flag contact="enable"/>
   </option>
 
   <default>
@@ -39,7 +39,7 @@
     <mesh file="PropGuard.obj" class="imported"/>
     <mesh file="ServoMount.obj" class="imported"/>
     <mesh file="Board Mount.obj" class="imported" />
-    <mesh file="House.obj" scale="0.3 0.3 0.3"/>
+    <!-- <mesh file="House.obj" scale="0.3 0.3 0.3"/> -->
 
  </asset>
 
@@ -47,23 +47,24 @@
   <worldbody>
     <light pos="0 0 1.5" dir="0 0 -1" directional="true" />
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" />
-    <geom type="mesh" mesh="House" pos="1 1 0.1"/>
+    <!-- <geom type="mesh" mesh="House" pos="1 1 0.1"/> -->
   </worldbody>
 
 
   <worldbody>
-    <body gravcomp="7.2" pos="-20 -20 5">
+    <body gravcomp="7.2" pos="0 0 1">
       <freejoint />
       <geom name="mylar" type="ellipsoid" size="0.65 0.56 0.56" rgba="0.6 0 0 1" mass="1"/>
       <site name="mountBalloon1" pos="0 -.05 -0.56"/>
       <site name="mountBalloon2" pos="0 .05 -0.56"/>
+      <camera name="followCamera" pos="-2.5 0 .2" euler="90 -90 0" />
     </body>
-    <body pos="-20 -20 4.40">
+    <body pos="0 0 .40">
       <freejoint/>
         <site name="mountGondola1" pos=" 0 -.05  0"/>
         <site name="mountGondola2" pos="0 .05  0"/>
         <camera name="blimpCamera" pos="0 0 -0.02" euler="90 -90 0" />
-        <geom type="mesh" mesh="Board Mount" euler="0 0 0" mass="0.02"/>
+        <geom type="mesh" name="controller" mesh="Board Mount" euler="0 0 0" mass="0.02"/>
         <geom name="carbonFiberRod" type="box" size="0.004 0.5 0.004"  mass="5.85"/>
       <!-- <geom name="board" type="box" size="0.004 0.5 0.004"  mass="1"/> -->
         <body name = "m1" pos = "0 -0.51 0">

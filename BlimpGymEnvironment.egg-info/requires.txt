@@ -1,3 +1,4 @@
 mujoco
 opencv-python
 setuptools
+numpy==1.26.4

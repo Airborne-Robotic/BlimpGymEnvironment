@@ -18,14 +18,17 @@ class Blimp():
 
 
     # TODO add action space
-    def __init__(self, modelPath: str = "diff.xml", render_mode: str = ""):
+    def __init__(self, modelPath: str = "diff.xml", render_mode: str = "" , videoFile: str = "video.mp4", height: int = 480, width:int =620):
         # Probably make it a bit more modular.
         DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
         self.d = mujoco.MjData(self.m)
         # if render_mode == "human":
-        self.renderer = mujoco.Renderer(self.m)
+        self.renderer = mujoco.Renderer(self.m, height, width)
         self.render_mode : str = render_mode
+        size = (620, 480)
+        self.videoWriter = cv2.VideoWriter(videoFile, cv2.VideoWriter_fourcc(*'MJPG'), 60, size)
+
 
     # TODO might need to add more sensor based on our real world sensor
     def get_obs(self):
@@ -33,7 +36,7 @@ class Blimp():
         self.renderer.update_scene(self.d, camera="blimpCamera")
         pixels = self.renderer.render()
         return [
-                self.d.geom("mylar").xpos,
+                self.d.geom("controller").xpos,
                 pixels.shape,
                 pixels.flatten()
             ]
@@ -91,12 +94,24 @@ class Blimp():
         if self.render_mode == "human":
             self.renderer.update_scene(self.d)
             pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
+
+        if self.render_mode == "followBlimp":
+            self.renderer.update_scene(self.d, camera="followCamera")
+            pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
             cv2.imshow("blimp",pixels)
             cv2.waitKey(10)
 
         if self.render_mode == "blimp":
             self.renderer.update_scene(self.d, camera="blimpCamera")
             pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
             cv2.imshow("blimp",pixels)
             cv2.waitKey(10)
         # truncation=False as the time limit is handled by the `TimeLimit` wrapper added during `make`
@@ -106,7 +121,6 @@ class Blimp():
             terminated,
             False,
         )
-
 
 
     def reset(self):

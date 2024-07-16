@@ -1,6 +1,7 @@
 Metadata-Version: 2.1
 Name: BlimpGymEnvironment
-Version: 0.0.1
+Version: 0.0.2
 Requires-Dist: mujoco
 Requires-Dist: opencv-python
 Requires-Dist: setuptools
+Requires-Dist: numpy==1.26.4
