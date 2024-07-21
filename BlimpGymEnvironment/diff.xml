@@ -91,6 +91,7 @@
             </body>
           </body>
         </body>
+        <site name="imu" pos="0 0 0" />
     </body>
     </worldbody>
 
@@ -121,6 +122,13 @@
 
 
   </tendon>
+
+  <sensor>
+    <gyro name="body_gyro" site="imu" />
+    <accelerometer name="body_linacc" site="imu" />
+    <framequat name="body_quat" objtype="site" objname="imu" />
+  </sensor>
+
 
 
 </mujoco>

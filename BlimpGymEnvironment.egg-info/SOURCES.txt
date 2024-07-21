@@ -3,6 +3,7 @@ pyproject.toml
 BlimpGymEnvironment/__init__.py
 BlimpGymEnvironment/blimp.py
 BlimpGymEnvironment/diff.xml
+BlimpGymEnvironment/main.py
 BlimpGymEnvironment/sano.xml
 BlimpGymEnvironment.egg-info/PKG-INFO
 BlimpGymEnvironment.egg-info/SOURCES.txt

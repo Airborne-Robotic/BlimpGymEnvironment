@@ -32,15 +32,22 @@ class Blimp():
 
     # TODO might need to add more sensor based on our real world sensor
     def get_obs(self):
-
+        # Observation should return a values observed by the sensors
         self.renderer.update_scene(self.d, camera="blimpCamera")
         pixels = self.renderer.render()
         return [
-                self.d.geom("controller").xpos,
+                self.d.sensor("body_linacc").data.copy(),
                 pixels.shape,
-                pixels.flatten()
+                pixels.flatten(),
+                self.d.sensor("body_gyro").data.copy()
             ]
 
+
+    # Get ground truth is used to get the ground truth from eiter the simulation or the
+    # motion capture system
+    def get_ground_truth(self):
+        return [self.d.geom("controller").xpos,self.d.geom("controller").xmat]
+        
 
     # Update data is a private function
     def _update_data(self,action):
@@ -70,20 +77,9 @@ class Blimp():
         pos_after = self.d.geom('mylar').xpos
         t2 = self.d.time
 
-
-
-        # print(forward_reward)
-        #reward = pos_after[0] + pos_after[1] + pos_after[2]
         reward = -(abs(observation[0][0]) + abs(observation[0][1]) + abs(observation[0][2]))
-        # for i in pos_after:
-        #     if i > 0.3:
-        #         reward = reward - 1
-        #     else:
-        #         reward = reward + 1
-        # print(reward)
 
         state = observation
-        # print(pos_after)
 
         # TODO Come up a condition for termination
         terminated = True if (pos_after[0] > 1 or pos_after[0] <-1 or pos_after[1]>1 or pos_after[1]<-1 or pos_after[2]>50 or reward < -2 ) else False# Keeping it true for now

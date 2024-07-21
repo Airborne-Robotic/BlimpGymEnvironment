@@ -10,7 +10,7 @@ pytorch environments.
 
 Example Use case:
 
-#+BEGIN_SRC python
+#+begin_src python
 
   """
   BlimpEnv takes the path to the model as the input, but by default it uses the Sano Blimp which is used
@@ -19,7 +19,7 @@ Example Use case:
   ,* Human = Dispaly everything
   ,* Graph = Show graph of how the reward is changing over time
   """
-  env = BlimpEnv(render_mode="human")
+  env = Blimp(render_mode="human")
 
   """
   Env reset will reset the model to it's original state, and returns the starting state of the model/environment
@@ -34,7 +34,7 @@ Example Use case:
   """
   observation, reward, terminated, info = env.step(action)
 
-#+END_SRC
+#+end_src
 
 
 
