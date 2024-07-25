@@ -3,6 +3,7 @@ import mujoco
 import cv2
 import os
 import pkg_resources
+import time
 
 class Blimp():
     metadata = {
@@ -28,7 +29,26 @@ class Blimp():
         self.render_mode : str = render_mode
         size = (620, 480)
         self.videoWriter = cv2.VideoWriter(videoFile, cv2.VideoWriter_fourcc(*'MJPG'), 60, size)
+        self.waypoint = (1,1,1)
+        self.terminationTime = 200
+        self.startTime = time.time()
 
+
+
+    def update_waypoint(self, waypoint:(int, int, int)):
+        """
+        Updates the waypoint of the system
+        """
+        self.waypoint = waypoint
+
+    def update_termination_time(self, time:int):
+        """
+        Updates the termination time of the environment
+
+        Arguments:
+        time : times in seconds
+        """
+        self.terminationTime = time
 
     # TODO might need to add more sensor based on our real world sensor
     def get_obs(self):
@@ -56,6 +76,37 @@ class Blimp():
         self.d.actuator('servo1').ctrl = [action[2]]
         self.d.actuator('servo2').ctrl = [action[3]]
 
+    def reward_calculation(self) -> float:
+        """
+        Calculate reward
+
+        Should override the function for different tasks while
+        implementing the function.
+
+        Return:
+        reward - float 
+
+        """
+
+        loc = self.get_ground_truth()[0]
+
+        err_x = loc[0] - self.waypoint[0] 
+        err_y = loc[1] - self.waypoint[1] 
+        err_z = loc[2] - self.waypoint[2] 
+        
+        return err_x + err_y + err_z
+
+
+    def _termination(self) -> bool:
+        """
+        Implementation of the termination logic
+
+        Returns
+        terminated - if the simulation should terminate or not
+        """
+
+        return (time.time() - self.startTime) > self.terminationTime
+        
 
     """
     Observation space is basically what the neural network observes.
@@ -63,54 +114,19 @@ class Blimp():
     """
     def step(self, a):
         # Observation space
-
-        observation = self.get_obs()
+        ob = self.get_obs()
 
         # TODO use the action
         self._update_data(a)
         
-        t1 = self.d.time
-        pos_before = self.d.geom('mylar').xpos
-        step = 10 # compute the reward function after 10 steps
-        for i in range(step):
-            mujoco.mj_step(self.m, self.d) 
-        pos_after = self.d.geom('mylar').xpos
-        t2 = self.d.time
+        loc = self.get_ground_truth()
 
-        reward = -(abs(observation[0][0]) + abs(observation[0][1]) + abs(observation[0][2]))
+        reward = self.reward_calculation()
 
-        state = observation
+        mujoco.mj_step(self.m, self.d) 
 
-        # TODO Come up a condition for termination
-        terminated = True if (pos_after[0] > 1 or pos_after[0] <-1 or pos_after[1]>1 or pos_after[1]<-1 or pos_after[2]>50 or reward < -2 ) else False# Keeping it true for now
-       # terminated = not not_terminated
-        # print(terminated )
-        ob = state
+        terminated = self._termination()
 
-        if self.render_mode == "human":
-            self.renderer.update_scene(self.d)
-            pixels = self.renderer.render()
-            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
-            self.videoWriter.write(pixels)
-            cv2.imshow("blimp",pixels)
-            cv2.waitKey(10)
-
-        if self.render_mode == "followBlimp":
-            self.renderer.update_scene(self.d, camera="followCamera")
-            pixels = self.renderer.render()
-            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
-            self.videoWriter.write(pixels)
-            cv2.imshow("blimp",pixels)
-            cv2.waitKey(10)
-
-        if self.render_mode == "blimp":
-            self.renderer.update_scene(self.d, camera="blimpCamera")
-            pixels = self.renderer.render()
-            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
-            self.videoWriter.write(pixels)
-            cv2.imshow("blimp",pixels)
-            cv2.waitKey(10)
-        # truncation=False as the time limit is handled by the `TimeLimit` wrapper added during `make`
         return (
             ob,
             reward,
@@ -119,8 +135,36 @@ class Blimp():
         )
 
 
+    def render(self):
+        if self.render_mode == "human":
+            self.renderer.update_scene(self.d)
+            pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
+
+
+        elif self.render_mode == "blimp":
+            self.renderer.update_scene(self.d, camera="blimpCamera")
+            pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
+        else :
+            self.renderer.update_scene(self.d, camera="followCamera")
+            pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB) 
+            self.videoWriter.write(pixels)
+            cv2.imshow("blimp",pixels)
+            cv2.waitKey(10)
+
+
+
     def reset(self):
         mujoco.mj_resetData(self.m, self.d)
+        self.startTime = time.time()
         # TODO Add more info for rest
         return (self.get_obs(),[])
         

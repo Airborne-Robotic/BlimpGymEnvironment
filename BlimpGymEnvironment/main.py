@@ -23,7 +23,8 @@ for debugging and other purposes.
 observation, reward, terminated, info = env.step([0,0,0,0])
 
 for i in range(500):
-    print([round(x,2) for x in observation[3]])
+    # print([round(x,2) for x in observation[3]])
+    # env.render()
     observation, reward, terminated, info = env.step([1,-1,1,1])
 
 print([round(x,2) for x in observation[3]])
