@@ -24,11 +24,12 @@ class Blimp():
         DATA_PATH = pkg_resources.resource_filename('BlimpGymEnvironment',modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
         self.d = mujoco.MjData(self.m)
-        # if render_mode == "human":
-        self.renderer = mujoco.Renderer(self.m, height, width)
-        self.render_mode : str = render_mode
         size = (620, 480)
-        self.videoWriter = cv2.VideoWriter(videoFile, cv2.VideoWriter_fourcc(*'MJPG'), 60, size)
+        # if render_mode == "human":
+        if render_mode!= "":
+            self.renderer = mujoco.Renderer(self.m, height, width)
+            self.render_mode : str = render_mode
+            self.videoWriter = cv2.VideoWriter(videoFile, cv2.VideoWriter_fourcc(*'MJPG'), 60, size)
         self.waypoint = (1,1,1)
         self.terminationTime = 200
         self.startTime = time.time()
