@@ -72,10 +72,10 @@ class Blimp():
 
     # Update data is a private function
     def _update_data(self,action):
-        self.d.actuator('motor1').ctrl = [action[0]]
-        self.d.actuator('motor2').ctrl = [action[1]]
-        self.d.actuator('servo1').ctrl = [action[2]]
-        self.d.actuator('servo2').ctrl = [action[3]]
+        self.d.actuator('motor1').ctrl = [2*action[0]]
+        self.d.actuator('motor2').ctrl = [2*action[1]]
+        self.d.actuator('servo1').ctrl = [4*action[2]]
+        self.d.actuator('servo2').ctrl = [4*action[3]]
 
     def reward_calculation(self) -> float:
         """
