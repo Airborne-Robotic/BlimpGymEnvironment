@@ -57,7 +57,8 @@ class Blimp():
         self.renderer.update_scene(self.d, camera="blimpCamera")
         pixels = self.renderer.render()
         return [
-                self.d.sensor("body_linacc").data.copy(),
+                # self.d.sensor("body_linacc").data.copy(),
+                self.d.geom("controller").xpos,
                 pixels.shape,
                 pixels.flatten(),
                 self.d.sensor("body_gyro").data.copy()
