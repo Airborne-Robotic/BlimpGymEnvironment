@@ -18,24 +18,62 @@ BlimpGymEnvironment/DPT_main/util/__init__.py
 BlimpGymEnvironment/DPT_main/util/io.py
 BlimpGymEnvironment/DPT_main/util/misc.py
 BlimpGymEnvironment/DPT_main/util/pallete.py
+BlimpGymEnvironment/assets/1103 Lift Motor top.stl
+BlimpGymEnvironment/assets/Assembly Drawing v1.pdf
+BlimpGymEnvironment/assets/BalloonBody.mtl
+BlimpGymEnvironment/assets/BalloonBody.obj
+BlimpGymEnvironment/assets/BetaFlight1105.mtl
+BlimpGymEnvironment/assets/BetaFlight1105.obj
 BlimpGymEnvironment/assets/Board Mount.mtl
 BlimpGymEnvironment/assets/Board Mount.obj
+BlimpGymEnvironment/assets/BoardMount.mtl
+BlimpGymEnvironment/assets/BoardMount.obj
+BlimpGymEnvironment/assets/CE3S1PRO_MotorMount.gcode
+BlimpGymEnvironment/assets/CE3S1PRO_Organizer.gcode
+BlimpGymEnvironment/assets/CarbonFiber.mtl
+BlimpGymEnvironment/assets/CarbonFiber.obj
 BlimpGymEnvironment/assets/Desk.obj
+BlimpGymEnvironment/assets/DroneFrame.mtl
+BlimpGymEnvironment/assets/DroneFrame.obj
+BlimpGymEnvironment/assets/Frame.mtl
+BlimpGymEnvironment/assets/Frame.obj
+BlimpGymEnvironment/assets/FullPrint.3mf
+BlimpGymEnvironment/assets/Gondola v9.mtl
 BlimpGymEnvironment/assets/Gondola v9.obj
 BlimpGymEnvironment/assets/Gondola.mtl
 BlimpGymEnvironment/assets/Gondola.obj
+BlimpGymEnvironment/assets/Gondola.stl
 BlimpGymEnvironment/assets/House.mtl
 BlimpGymEnvironment/assets/House.obj
+BlimpGymEnvironment/assets/Lid.mtl
+BlimpGymEnvironment/assets/Lid.obj
+BlimpGymEnvironment/assets/Motor v1.mtl
 BlimpGymEnvironment/assets/Motor v1.obj
+BlimpGymEnvironment/assets/MotorMount.mtl
 BlimpGymEnvironment/assets/MotorMount.obj
+BlimpGymEnvironment/assets/MotorMount.stl
+BlimpGymEnvironment/assets/MotorMountHolder v21.mtl
 BlimpGymEnvironment/assets/MotorMountHolder v21.obj
+BlimpGymEnvironment/assets/MotorMountHolder.mtl
 BlimpGymEnvironment/assets/MotorMountHolder.obj
+BlimpGymEnvironment/assets/MotorMountHolder.stl
 BlimpGymEnvironment/assets/PropGuard.mtl
 BlimpGymEnvironment/assets/PropGuard.obj
 BlimpGymEnvironment/assets/QuadProp.obj
+BlimpGymEnvironment/assets/STEM Lift Motor Mount 1105.stl
+BlimpGymEnvironment/assets/SanoBlimp v1.mtl
+BlimpGymEnvironment/assets/SanoBlimp v1.obj
+BlimpGymEnvironment/assets/SanoPilot.pcb3d
 BlimpGymEnvironment/assets/ServoMount.mtl
 BlimpGymEnvironment/assets/ServoMount.obj
+BlimpGymEnvironment/assets/SimpleProp.mtl
+BlimpGymEnvironment/assets/SimpleProp.obj
+BlimpGymEnvironment/assets/VerticalMotorMount.3mf
+BlimpGymEnvironment/assets/VerticalMotorMount.stl
+BlimpGymEnvironment/assets/VerticalMount v9.mtl
 BlimpGymEnvironment/assets/VerticalMount v9.obj
+BlimpGymEnvironment/assets/pi-camera-rev-1.3 v4 v1.mtl
+BlimpGymEnvironment/assets/pi-camera-rev-1.3 v4 v1.obj
 BlimpGymEnvironment/dpt/__init__.py
 BlimpGymEnvironment/dpt/base_model.py
 BlimpGymEnvironment/dpt/blocks.py
