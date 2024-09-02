@@ -22,11 +22,11 @@ for debugging and other purposes.
 """
 observation, reward, terminated, info = env.step([0, 0, 0, 0])
 
-for i in range(500):
+env.reset()
+for i in range(600):
     # print([round(x,2) for x in observation[3]])
     env.render()
-    observation, reward, terminated, info = env.step([1, -1, 1, 1])
-    env.update_waypoint((0, 0, 0))
+    observation, reward, terminated, info = env.step([4, 4, 1, 1])
     print(reward)
 
 print([round(x, 2) for x in observation[3]])

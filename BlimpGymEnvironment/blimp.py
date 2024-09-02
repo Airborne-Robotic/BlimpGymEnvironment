@@ -25,6 +25,7 @@ class Blimp():
         DATA_PATH = pkg_resources.resource_filename(
             'BlimpGymEnvironment', modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
+        # self.m = mujoco.MjModel.from_xml_path("diff.xml")
         self.d = mujoco.MjData(self.m)
         size = (620, 480)
         # if render_mode == "human":
@@ -87,7 +88,7 @@ class Blimp():
         implementing the function.
 
         Return:
-        reward - float 
+        reward - float
 
         """
 
@@ -98,7 +99,7 @@ class Blimp():
         err_z = loc[2] - self.waypoint[2]
 
         return -np.linalg.norm([err_x, err_y, err_z])
-        # return -norm(err_x + err_y + err_z)
+        # return err_x + err_y + err_z
 
     def _termination(self) -> bool:
         """
@@ -163,6 +164,7 @@ class Blimp():
 
     def reset(self):
         mujoco.mj_resetData(self.m, self.d)
+        self.d.geom("waypoint").xpos = self.waypoint
         self.startTime = time.time()
         # TODO Add more info for rest
         return (self.get_obs(), [])

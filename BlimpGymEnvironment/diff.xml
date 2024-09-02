@@ -107,8 +107,8 @@
 
     <motor name="servo1" ctrllimited="true" forcerange="0 10" ctrlrange="0 4" joint="servo1" />
     <motor name="servo2" ctrllimited="true" forcerange="0 10" ctrlrange="0 4" joint="servo2" />
-    <motor name="motor1" site="thrust1"  gear="0 0 1 0 0 0" ctrlrange="-2 2"/>
-    <motor name="motor2" site="thrust2" gear="0 0 1 0 0 0" ctrlrange="-2 2"/>
+    <motor name="motor1" site="thrust1"  gear="0 0 7 0 0 0" ctrlrange="-2 2"/>
+    <motor name="motor2" site="thrust2" gear="0 0 7 0 0 0" ctrlrange="-2 2"/>
 
   </actuator>
 
