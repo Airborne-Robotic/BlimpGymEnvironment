@@ -42,7 +42,7 @@
     <mesh file="PropGuard.obj" class="imported"/>
     <mesh file="ServoMount.obj" class="imported"/>
     <mesh file="Board Mount.obj" class="imported" />
-    <!-- <mesh file="House.obj" scale="0.3 0.3 0.3"/> -->
+    <mesh file="House.obj" scale="0.3 0.3 0.3"/>
 
  </asset>
 

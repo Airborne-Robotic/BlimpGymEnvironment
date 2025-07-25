@@ -62,8 +62,7 @@ class Blimp():
         return [
             # self.d.sensor("body_linacc").data.copy(),
             self.d.geom("controller").xpos,
-            pixels.shape,
-            pixels.flatten(),
+            pixels,
             self.d.sensor("body_gyro").data.copy()
         ]
 

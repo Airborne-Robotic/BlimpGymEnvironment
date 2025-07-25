@@ -10,14 +10,6 @@ BlimpGymEnvironment.egg-info/SOURCES.txt
 BlimpGymEnvironment.egg-info/dependency_links.txt
 BlimpGymEnvironment.egg-info/requires.txt
 BlimpGymEnvironment.egg-info/top_level.txt
-BlimpGymEnvironment/DPT_main/run_monodepth.py
-BlimpGymEnvironment/DPT_main/run_segmentation.py
-BlimpGymEnvironment/DPT_main/setup.py
-BlimpGymEnvironment/DPT_main/test.py
-BlimpGymEnvironment/DPT_main/util/__init__.py
-BlimpGymEnvironment/DPT_main/util/io.py
-BlimpGymEnvironment/DPT_main/util/misc.py
-BlimpGymEnvironment/DPT_main/util/pallete.py
 BlimpGymEnvironment/assets/1103 Lift Motor top.stl
 BlimpGymEnvironment/assets/Assembly Drawing v1.pdf
 BlimpGymEnvironment/assets/BalloonBody.mtl
@@ -74,14 +66,3 @@ BlimpGymEnvironment/assets/VerticalMount v9.mtl
 BlimpGymEnvironment/assets/VerticalMount v9.obj
 BlimpGymEnvironment/assets/pi-camera-rev-1.3 v4 v1.mtl
 BlimpGymEnvironment/assets/pi-camera-rev-1.3 v4 v1.obj
-BlimpGymEnvironment/dpt/__init__.py
-BlimpGymEnvironment/dpt/base_model.py
-BlimpGymEnvironment/dpt/blocks.py
-BlimpGymEnvironment/dpt/midas_net.py
-BlimpGymEnvironment/dpt/models.py
-BlimpGymEnvironment/dpt/transforms.py
-BlimpGymEnvironment/dpt/vit.py
-BlimpGymEnvironment/util/__init__.py
-BlimpGymEnvironment/util/io.py
-BlimpGymEnvironment/util/misc.py
-BlimpGymEnvironment/util/pallete.py
