@@ -7,7 +7,7 @@ render_mode paramater is used to specify how to render what is happening,
 * Human = Dispaly everything
 * Graph = Show graph of how the reward is changing over time
 """
-env = Blimp(render_mode="Blimp")
+env = Blimp(render_mode=" ")
 
 """
 Env reset will reset the model to it's original state, and returns the starting state of the model/environment

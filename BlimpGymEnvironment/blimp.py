@@ -25,7 +25,7 @@ class Blimp():
         DATA_PATH = pkg_resources.resource_filename(
             'BlimpGymEnvironment', modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
-        # self.m = mujoco.MjModel.from_xml_path("diff.xml")
+        #self.m = mujoco.MjModel.from_xml_path("diff.xml")
         self.d = mujoco.MjData(self.m)
         size = (620, 480)
         # if render_mode == "human":
