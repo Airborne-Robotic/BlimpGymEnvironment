@@ -6,7 +6,7 @@ import pkg_resources
 import time
 
 
-class Blimp():
+class Blimp:
     metadata = {
         "render_modes": [
             "human",
@@ -19,13 +19,18 @@ class Blimp():
 
     # TODO add action space
 
-    def __init__(self, modelPath: str = "diff.xml", render_mode: str = "",
-                 videoFile: str = "video.mp4", height: int = 480, width: int = 620):
+    def __init__(
+        self,
+        modelPath: str = "diff.xml",
+        render_mode: str = "",
+        videoFile: str = "video.mp4",
+        height: int = 480,
+        width: int = 620,
+    ):
         # Probably make it a bit more modular.
-        DATA_PATH = pkg_resources.resource_filename(
-            'BlimpGymEnvironment', modelPath)
+        DATA_PATH = pkg_resources.resource_filename("BlimpGymEnvironment", modelPath)
         self.m = mujoco.MjModel.from_xml_path(DATA_PATH)
-        #self.m = mujoco.MjModel.from_xml_path("diff.xml")
+        # self.m = mujoco.MjModel.from_xml_path("diff.xml")
         self.d = mujoco.MjData(self.m)
         size = (620, 480)
         # if render_mode == "human":
@@ -33,7 +38,8 @@ class Blimp():
             self.renderer = mujoco.Renderer(self.m, height, width)
             self.render_mode: str = render_mode
             self.videoWriter = cv2.VideoWriter(
-                videoFile, cv2.VideoWriter_fourcc(*'MJPG'), 60, size)
+                videoFile, cv2.VideoWriter_fourcc(*"MJPG"), 60, size
+            )
         self.waypoint = (1, 1, 1)
         self.terminationTime = 200
         self.startTime = time.time()
@@ -57,13 +63,16 @@ class Blimp():
     # TODO might need to add more sensor based on our real world sensor
     def get_obs(self):
         # Observation should return a values observed by the sensors
-        self.renderer.update_scene(self.d, camera="blimpCamera")
-        pixels = self.renderer.render()
+        if hasattr(self, "renderer"):
+            self.renderer.update_scene(self.d, camera="blimpCamera")
+            pixels = self.renderer.render()
+        else:
+            pixels = None
         return [
             # self.d.sensor("body_linacc").data.copy(),
             self.d.geom("controller").xpos,
             pixels,
-            self.d.sensor("body_gyro").data.copy()
+            self.d.sensor("body_gyro").data.copy(),
         ]
 
     # Get ground truth is used to get the ground truth from eiter the simulation or the
@@ -74,10 +83,10 @@ class Blimp():
 
     # Update data is a private function
     def _update_data(self, action):
-        self.d.actuator('motor1').ctrl = [2*action[0]]
-        self.d.actuator('motor2').ctrl = [2*action[1]]
-        self.d.actuator('servo1').ctrl = [4*action[2]]
-        self.d.actuator('servo2').ctrl = [4*action[3]]
+        self.d.actuator("motor1").ctrl = [2 * action[0]]
+        self.d.actuator("motor2").ctrl = [2 * action[1]]
+        self.d.actuator("servo1").ctrl = [action[2]]  # Torque control for servo tilt
+        self.d.actuator("servo2").ctrl = [action[3]]  # Torque control for servo tilt
 
     def reward_calculation(self) -> float:
         """
@@ -138,6 +147,10 @@ class Blimp():
         )
 
     def render(self):
+        # Check if renderer exists
+        if not hasattr(self, "renderer"):
+            return None
+
         if self.render_mode == "human":
             self.renderer.update_scene(self.d)
             pixels = self.renderer.render()
@@ -145,6 +158,7 @@ class Blimp():
             self.videoWriter.write(pixels)
             cv2.imshow("blimp", pixels)
             cv2.waitKey(10)
+            return pixels
 
         elif self.render_mode == "blimp":
             self.renderer.update_scene(self.d, camera="blimpCamera")
@@ -153,6 +167,13 @@ class Blimp():
             self.videoWriter.write(pixels)
             cv2.imshow("blimp", pixels)
             cv2.waitKey(10)
+            return pixels
+        elif self.render_mode == "rgb_array":
+            # For rgb_array mode, just render and return pixels without display
+            self.renderer.update_scene(self.d, camera="followCamera")
+            pixels = self.renderer.render()
+            pixels = cv2.cvtColor(pixels, cv2.COLOR_BGR2RGB)
+            return pixels
         else:
             self.renderer.update_scene(self.d, camera="followCamera")
             pixels = self.renderer.render()
@@ -160,6 +181,7 @@ class Blimp():
             self.videoWriter.write(pixels)
             cv2.imshow("blimp", pixels)
             cv2.waitKey(10)
+            return pixels
 
     def reset(self):
         mujoco.mj_resetData(self.m, self.d)

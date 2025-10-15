@@ -43,7 +43,7 @@
     <mesh file="ServoMount.obj" class="imported"/>
     <mesh file="Board Mount.obj" class="imported" />
     <mesh file="House.obj" scale="0.3 0.3 0.3"/>
-    <mesh name="desk" file="desk.obj" scale=".01 .01 .01" />
+    <mesh name="desk" file="Desk.obj" scale=".01 .01 .01" />
  </asset>
 
 
@@ -79,7 +79,7 @@
           <geom type="mesh" mesh="ServoMount" euler="0 0 180"/>
           <body name="guard1" pos="-0.04 0 -0.008" euler="0 0 0" >
             <geom type="mesh" mesh="PropGuard" euler = "180 0 0"  mass="0.04"/>
-          <joint axis="1 0 0" name="servo1" pos="0.0 0.0 0.0" range="0 180" damping="0.003" type="hinge"/>
+          <joint axis="1 0 0" name="servo1" pos="0.0 0.0 0.0" range="0 180" damping="0.2" armature="0.005" limited="true" type="hinge"/>
             <body name="prop1">
               <joint axis = "1 0 0" name="propeller1" damping="0.0003" type="hinge"/>
               <geom type="ellipsoid" size="0.035 0.006 0.0001" mass="0.02"/>
@@ -91,7 +91,7 @@
           <geom type="mesh" mesh="ServoMount"  euler="0 0 0"/>
           <body name="guard2" pos="0.04 0. -0.008" euler="0 0 0">
             <geom type="mesh" mesh="PropGuard" euler = "180 0 180" mass="0.04" />
-          <joint axis="1 0 0" name="servo2" pos="0.0 0.0 0.0" range="0 180" damping="0.003" type="hinge"/>
+          <joint axis="1 0 0" name="servo2" pos="0.0 0.0 0.0" range="0 180" damping="0.2" armature="0.005" limited="true" type="hinge"/>
             <body name="prop2">
               <joint axis = "1 0 0" name="propeller2" damping="0.0003" type="hinge"/>
               <geom type="ellipsoid" size="0.035 0.006 0.0001"  mass="0.02"/>
@@ -107,9 +107,9 @@
 
   <actuator>
 
-    <motor name="servo1" ctrllimited="true" forcerange="0 10" ctrlrange="0 4" joint="servo1" />
-    <motor name="servo2" ctrllimited="true" forcerange="0 10" ctrlrange="0 4" joint="servo2" />
-    <motor name="motor1" site="thrust1"  gear="0 0 7 0 0 0" ctrlrange="-2 2"/>
+    <motor name="servo1" ctrllimited="true" ctrlrange="-1 1" joint="servo1" />
+    <motor name="servo2" ctrllimited="true" ctrlrange="-1 1" joint="servo2" />
+    <motor name="motor1" site="thrust1" gear="0 0 7 0 0 0" ctrlrange="-2 2"/>
     <motor name="motor2" site="thrust2" gear="0 0 7 0 0 0" ctrlrange="-2 2"/>
 
   </actuator>

@@ -1,0 +1,33 @@
+Wed Oct 15 17:52:59 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 15. The simulation is unstable. Time = 0.0500.
+
+Wed Oct 15 17:52:59 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 15. The simulation is unstable. Time = 0.0500.
+
+Wed Oct 15 17:52:59 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 9. The simulation is unstable. Time = 0.0500.
+
+Wed Oct 15 17:52:59 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 6. The simulation is unstable. Time = 0.0200.
+
+Wed Oct 15 17:52:59 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 15. The simulation is unstable. Time = 0.0080.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 18. The simulation is unstable. Time = 0.0100.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 20. The simulation is unstable. Time = 0.0100.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 18. The simulation is unstable. Time = 0.0100.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 18. The simulation is unstable. Time = 0.0120.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 18. The simulation is unstable. Time = 0.0240.
+
+Wed Oct 15 17:54:06 2025
+WARNING: Nan, Inf or huge value in QACC at DOF 18. The simulation is unstable. Time = 0.0100.
+
